@@ -75,6 +75,12 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 - (void)shutdown;
 - (void)setPauseInBackground:(BOOL)pause;
 
+//added for flutter
+- (CVPixelBufferRef)framePixelbuffer;
+- (void)framePixelbufferLock;
+- (void)framePixelbufferUnlock;
+//end
+
 @property(nonatomic, readonly)  UIView *view;
 @property(nonatomic)            NSTimeInterval currentPlaybackTime;
 @property(nonatomic, readonly)  NSTimeInterval duration;
@@ -165,6 +171,9 @@ IJK_EXTERN NSString *const IJKMPMoviePlayerAccurateSeekCompleteNotification;
 IJK_EXTERN NSString *const IJKMPMoviePlayerSeekAudioStartNotification;
 IJK_EXTERN NSString *const IJKMPMoviePlayerSeekVideoStartNotification;
 
+#pragma mark for flutter
+IJK_EXTERN NSString *const IJKMPMoviePlayerVideoRotationNotification;
+IJK_EXTERN NSString *const IJKMPMoviePlayerVideoRotationRotateUserInfoKey; // NSNumber (IJKMPMovieFinishReason)
 @end
 
 #pragma mark IJKMediaUrlOpenDelegate

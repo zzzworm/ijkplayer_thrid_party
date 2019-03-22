@@ -463,6 +463,34 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
     return _isVideoToolboxOpen;
 }
 
+//add for flutter
+- (CVPixelBufferRef)framePixelbuffer
+{
+    if (_mediaPlayer)
+    {
+        return ijkmp_get_pixelbuffer(_mediaPlayer);
+    }
+    
+    return NULL;
+}
+
+- (void)framePixelbufferLock
+{
+    if (_mediaPlayer)
+    {
+        ijkmp_pixelbuffer_mutex_lock(_mediaPlayer);
+    }
+}
+
+- (void)framePixelbufferUnlock
+{
+    if (_mediaPlayer)
+    {
+        ijkmp_pixelbuffer_mutex_unlock(_mediaPlayer);
+    }
+}
+//end
+
 inline static int getPlayerOption(IJKFFOptionCategory category)
 {
     int mp_category = -1;
@@ -1317,6 +1345,17 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
              postNotificationName:IJKMPMoviePlayerSeekAudioStartNotification
              object:self];
             _isAudioSync = 0;
+            break;
+        }
+        case FFP_MSG_VIDEO_ROTATION_CHANGED: {
+            NSLog(@"FFP_MSG_VIDEO_ROTATION_CHANGED:\n");
+            int rotate = avmsg->arg1;
+            NSLog(@"rotate arg1 = %d", rotate);
+            [[NSNotificationCenter defaultCenter]
+             postNotificationName:IJKMPMoviePlayerVideoRotationNotification
+             object:self
+             userInfo:@{IJKMPMoviePlayerVideoRotationRotateUserInfoKey: @(avmsg->arg1)}
+             ];
             break;
         }
         default:

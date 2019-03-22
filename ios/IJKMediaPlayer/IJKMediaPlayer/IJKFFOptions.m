@@ -43,6 +43,9 @@
     [options setPlayerOptionIntValue:3      forKey:@"video-pictq-size"];
     [options setPlayerOptionIntValue:0      forKey:@"videotoolbox"];
     [options setPlayerOptionIntValue:960    forKey:@"videotoolbox-max-frame-width"];
+    //add for flutter
+    [options setPlayerOptionIntValue:1      forKey:@"video-max-frame-width-default"];
+    //end
 
     [options setFormatOptionIntValue:0                  forKey:@"auto_convert"];
     [options setFormatOptionIntValue:1                  forKey:@"reconnect"];
