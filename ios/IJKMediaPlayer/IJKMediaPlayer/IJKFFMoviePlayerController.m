@@ -489,6 +489,12 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
         ijkmp_pixelbuffer_mutex_unlock(_mediaPlayer);
     }
 }
+
+- (int64_t)tcpSpeed{
+    int64_t tcpSpeed = ijkmp_get_property_int64(_mediaPlayer, FFP_PROP_INT64_TCP_SPEED, 0);
+    return tcpSpeed;
+}
+
 //end
 
 inline static int getPlayerOption(IJKFFOptionCategory category)

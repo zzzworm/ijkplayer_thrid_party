@@ -101,6 +101,7 @@ typedef enum IJKLogLevel {
 - (CVPixelBufferRef)framePixelbuffer;
 - (void)framePixelbufferLock;
 - (void)framePixelbufferUnlock;
+- (int64_t) tcpSpeed;
 //end
 
 - (void)setHudValue:(NSString *)value forKey:(NSString *)key;
