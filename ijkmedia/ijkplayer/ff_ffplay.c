@@ -637,12 +637,29 @@ int createCVPixelBuffer(FFPlayer *ffp, AVCodecParameters* avcp, AVFrame* frame, 
     
     if (!ffp->szt_pixelbuffer)
     {
+        CFDictionaryRef empty; // empty value for attr value.
+        CFMutableDictionaryRef attrs;
+        empty = CFDictionaryCreate(kCFAllocatorDefault, // our empty IOSurface properties dictionary
+                                   NULL,
+                                   NULL,
+                                   0,
+                                   &kCFTypeDictionaryKeyCallBacks,
+                                   &kCFTypeDictionaryValueCallBacks);
+        attrs = CFDictionaryCreateMutable(kCFAllocatorDefault,
+                                          1,
+                                          &kCFTypeDictionaryKeyCallBacks,
+                                          &kCFTypeDictionaryValueCallBacks);
+        
+        CFDictionarySetValue(attrs,
+                             kCVPixelBufferIOSurfacePropertiesKey,
+                             empty);
+        
         status = CVPixelBufferCreate(
                                      kCFAllocatorDefault,
                                      frame->width,
                                      frame->height,
                                      kCVPixelFormatType_32BGRA,
-                                     NULL,
+                                     attrs,
                                      cvImage
                                      );
         if (status)
