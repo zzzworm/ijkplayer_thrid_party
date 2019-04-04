@@ -42,3 +42,7 @@ xcshareddata
 *.xccheckout
 
 .vscode
+
+.classpath
+.settings
+.project
