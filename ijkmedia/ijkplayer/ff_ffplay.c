@@ -703,6 +703,9 @@ static int decoder_decode_frame(FFPlayer *ffp, Decoder *d, AVFrame *frame, AVSub
                             } else if (!ffp->decoder_reorder_pts) {
                                 frame->pts = frame->pkt_dts;
                             }
+                            ffp_frame_lock(ffp);
+                            ffp->current_frame = frame;
+                            ffp_frame_unlock(ffp);
                             //add for flutter
                              #if !defined (__ANDROID__)
                             ffp_pixelbuffer_lock(ffp);
@@ -5214,4 +5217,17 @@ int ffp_pixelbuffer_unlock(FFPlayer *ffp)
     return ret;
 }
 #endif
+            
+int ffp_frame_mutex_init(FFPlayer *ffp){
+    int ret = pthread_mutex_init(&ffp->current_frame_mutex, NULL);
+    return ret;
+}
+int ffp_frame_lock(FFPlayer *ffp){
+    int ret = pthread_mutex_lock(&ffp->current_frame_mutex);
+    return ret;
+}
+int ffp_frame_unlock(FFPlayer *ffp){
+    int ret = pthread_mutex_unlock(&ffp->current_frame_mutex);
+    return ret;
+}
 //end

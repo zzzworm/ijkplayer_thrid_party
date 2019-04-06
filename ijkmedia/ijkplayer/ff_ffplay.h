@@ -121,6 +121,10 @@ int       ffp_pixelbuffer_mutex_init(FFPlayer *ffp);
 int       ffp_pixelbuffer_lock(FFPlayer *ffp);
 int       ffp_pixelbuffer_unlock(FFPlayer *ffp);
 #endif
+
+int ffp_frame_mutex_init(FFPlayer *ffp);
+int ffp_frame_lock(FFPlayer *ffp);
+int ffp_frame_unlock(FFPlayer *ffp);
 //end
 
 // must be freed with free();

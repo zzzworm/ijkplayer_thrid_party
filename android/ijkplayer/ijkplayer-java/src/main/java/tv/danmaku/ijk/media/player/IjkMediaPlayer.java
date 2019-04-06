@@ -23,8 +23,9 @@ import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
-import android.graphics.SurfaceTexture;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.media.RingtoneManager;
@@ -504,6 +505,9 @@ public final class IjkMediaPlayer extends AbstractMediaPlayer {
 
     private native void _setAndroidIOCallback(IAndroidIO androidIO)
             throws IllegalArgumentException, SecurityException, IllegalStateException;
+
+    public native Bitmap getFrameBitmap();
+    // public native int getFrameBitmap();
 
     @Override
     public String getDataSource() {

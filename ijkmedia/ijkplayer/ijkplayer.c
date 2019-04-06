@@ -822,4 +822,26 @@ int ijkmp_pixelbuffer_mutex_unlock(IjkMediaPlayer *mp)
     return ret;
 }
 #endif
+
+// #if defined (__ANDROID__)
+int ijkmp_frame_mutex_init(IjkMediaPlayer *mp)
+{
+    int ret = ffp_frame_mutex_init(mp->ffplayer);
+    return ret;
+}
+int  ijkmp_frame_lock(IjkMediaPlayer *mp)
+{
+    int ret = ffp_frame_lock(mp->ffplayer);
+    return ret;
+}
+int  ijkmp_frame_unlock(IjkMediaPlayer *mp)
+{
+    int ret = ffp_frame_unlock(mp->ffplayer);
+    return ret;
+}
+AVFrame* ijkmp_get_current_frame(IjkMediaPlayer *mp)
+{
+    return mp->ffplayer->current_frame;
+}
+// #endif
 //end

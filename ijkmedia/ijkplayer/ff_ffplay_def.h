@@ -737,6 +737,10 @@ typedef struct FFPlayer {
     CVPixelBufferRef szt_pixelbuffer;
     pthread_mutex_t szt_pixelbuffer_mutex;
     #endif
+    // #if defined(__ANDROID__)
+    AVFrame *current_frame;
+    pthread_mutex_t current_frame_mutex;
+    // #endif
     //end
 } FFPlayer;
 

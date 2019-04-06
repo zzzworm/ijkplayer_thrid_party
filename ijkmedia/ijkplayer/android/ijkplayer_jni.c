@@ -42,6 +42,14 @@
 #include "ijksdl/android/ijksdl_codec_android_mediadef.h"
 #include "ijkavformat/ijkavformat.h"
 
+#include <android/bitmap.h>
+#include <libyuv.h>
+#include <android/log.h>
+
+#define LOGTAG "ijkplayer-jni"
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOGTAG, __VA_ARGS__)
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOGTAG, __VA_ARGS__)
+
 #define JNI_MODULE_PACKAGE      "tv/danmaku/ijk/media/player"
 #define JNI_CLASS_IJKPLAYER     "tv/danmaku/ijk/media/player/IjkMediaPlayer"
 #define JNI_IJK_MEDIA_EXCEPTION "tv/danmaku/ijk/media/player/exceptions/IjkMediaException"
@@ -1129,9 +1137,81 @@ LABEL_RETURN:
     return;
 }
 
+static jobject create_bitmap(JNIEnv *env, int width, int height)
+{
+    // 找到 Bitmap.class 和 该类中的 createBitmap 方法
+    jclass clz_bitmap = (*env)->FindClass(env,"android/graphics/Bitmap");
+    jmethodID mtd_bitmap = (*env)->GetStaticMethodID(env,
+        clz_bitmap, "createBitmap",
+        "(IILandroid/graphics/Bitmap$Config;)Landroid/graphics/Bitmap;");
 
+    // 配置 Bitmap
+    jstring str_config = (*env)->NewStringUTF(env, "ARGB_8888");
+    jclass clz_config = (*env)->FindClass(env, "android/graphics/Bitmap$Config");
+    jmethodID mtd_config = (*env)->GetStaticMethodID(env,
+        clz_config, "valueOf", "(Ljava/lang/String;)Landroid/graphics/Bitmap$Config;");
+    jobject obj_config = (*env)->CallStaticObjectMethod(env, clz_config, mtd_config, str_config);
 
+    // 创建 Bitmap 对象
+    jobject bitmap = (*env)->CallStaticObjectMethod(env,
+        clz_bitmap, mtd_bitmap, width, height, obj_config);
+    return bitmap;
+}
 
+// static int
+// IjkMediaPlayer_getCurrentFrameBitmap(JNIEnv *env, jobject thiz ){
+//     IjkMediaPlayer *mp = jni_get_media_player(env, thiz);
+//     AVFrame *frame = ijkmp_get_current_frame(mp);
+
+//     if(frame){
+//         // jobject bitmap = create_bitmap(env,frame->width,frame->height);
+//         // void *addr_pixels;
+//         // AndroidBitmap_lockPixels(env, bitmap, &addr_pixels);
+//         // int linesize = frame-> width * 4;
+//         // I420ToABGR(frame->data[0], frame->linesize[0], // Y
+//         //            frame->data[1], frame->linesize[1], // U
+//         //            frame->data[2], frame->linesize[2], // V
+//         //            (uint8_t *) addr_pixels, linesize,  // RGBA
+//         //            frame->width, frame->height);
+
+//         // AndroidBitmap_unlockPixels(env, bitmap);
+//         LOGD("frame.width = %d, height = %d" , frame->width , frame->height);
+//         // return bitmap;
+//     } else {
+//         LOGD("current frame is null");
+//         // return NULL;
+//     }
+//     // return thiz;
+//     return 1;
+// }
+
+JNIEXPORT jobject JNICALL
+Java_tv_danmaku_ijk_media_player_IjkMediaPlayer_getFrameBitmap(JNIEnv *env, jobject thiz)
+{
+    IjkMediaPlayer *mp = jni_get_media_player(env, thiz);
+    AVFrame *frame = ijkmp_get_current_frame(mp);
+
+    if(frame){
+        jobject bitmap = create_bitmap(env,frame->width,frame->height);
+        void *addr_pixels;
+        AndroidBitmap_lockPixels(env, bitmap, &addr_pixels);
+        int linesize = frame-> width * 4;
+        I420ToABGR(frame->data[0], frame->linesize[0], // Y
+                   frame->data[1], frame->linesize[1], // U
+                   frame->data[2], frame->linesize[2], // V
+                   (uint8_t *) addr_pixels, linesize,  // RGBA
+                   frame->width, frame->height);
+
+        AndroidBitmap_unlockPixels(env, bitmap);
+        LOGD("frame.width = %d, height = %d" , frame->width , frame->height);
+        return bitmap;
+    } else {
+        LOGD("current frame is null");
+        return NULL;
+    }
+    // return thiz;
+    // return 1;
+}
 
 // ----------------------------------------------------------------------------
 

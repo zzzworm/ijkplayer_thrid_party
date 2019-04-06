@@ -28,7 +28,6 @@
 #include "ff_ffmsg_queue.h"
 
 #include "ijkmeta.h"
-
 //add for flutter
 #if !defined (__ANDROID__)
 #include <CoreVideo/CoreVideo.h>
@@ -231,6 +230,12 @@ int ijkmp_pixelbuffer_mutex_init(IjkMediaPlayer *mp);
 int ijkmp_pixelbuffer_mutex_lock(IjkMediaPlayer *mp);
 int ijkmp_pixelbuffer_mutex_unlock(IjkMediaPlayer *mp);
 #endif
+
+AVFrame* ijkmp_get_current_frame(IjkMediaPlayer *mp) ;
+int ijkmp_frame_mutex_init(IjkMediaPlayer *mp);
+int ijkmp_frame_lock(IjkMediaPlayer *mp);
+int ijkmp_frame_unlock(IjkMediaPlayer *mp);
+
 //end
 
 #endif

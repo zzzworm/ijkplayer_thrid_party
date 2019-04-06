@@ -17,9 +17,12 @@
 
 package tv.danmaku.ijk.media.example.activities;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -35,11 +38,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-import tv.danmaku.ijk.media.player.misc.ITrackInfo;
+import java.util.Locale;
+
 import tv.danmaku.ijk.media.example.R;
 import tv.danmaku.ijk.media.example.application.Settings;
 import tv.danmaku.ijk.media.example.content.RecentMediaStorage;
@@ -47,12 +51,14 @@ import tv.danmaku.ijk.media.example.fragments.TracksFragment;
 import tv.danmaku.ijk.media.example.widget.media.AndroidMediaController;
 import tv.danmaku.ijk.media.example.widget.media.IjkVideoView;
 import tv.danmaku.ijk.media.example.widget.media.MeasureHelper;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
+import tv.danmaku.ijk.media.player.misc.ITrackInfo;
 
 public class VideoActivity extends AppCompatActivity implements TracksFragment.ITrackHolder {
     private static final String TAG = "VideoActivity";
 
     private String mVideoPath;
-    private Uri    mVideoUri;
+    private Uri mVideoUri;
 
     private AndroidMediaController mMediaController;
     private IjkVideoView mVideoView;
@@ -203,6 +209,19 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
             return true;
         } else if (id == R.id.action_show_info) {
             mVideoView.showMediaInfo();
+            return true;
+        } else if (id == R.id.action_screen_shot) {
+            Bitmap frameBitmap = mVideoView.getFrameBitmap();
+            if (frameBitmap != null) {
+                int width = frameBitmap.getWidth();
+                int height = frameBitmap.getHeight();
+                Log.i(TAG, String.format(Locale.CHINA, "width = %d, height = %d", width, height));
+                showShotDialog(frameBitmap);
+//                frameBitmap.recycle();
+            } else {
+                Log.i(TAG, "the bitmap is null");
+            }
+            return true;
         } else if (id == R.id.action_show_tracks) {
             if (mDrawerLayout.isDrawerOpen(mRightDrawer)) {
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.right_drawer);
@@ -248,5 +267,20 @@ public class VideoActivity extends AppCompatActivity implements TracksFragment.I
             return -1;
 
         return mVideoView.getSelectedTrack(trackType);
+    }
+
+    void showShotDialog(final Bitmap bitmap) {
+        ImageView view = new ImageView(this);
+        view.setImageBitmap(bitmap);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .create();
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                bitmap.recycle();
+            }
+        });
+        dialog.show();
     }
 }
