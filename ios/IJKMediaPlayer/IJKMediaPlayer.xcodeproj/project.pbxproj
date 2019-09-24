@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17FCB0976D7BDB259AECC9FD /* IJKVideoUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 17FCBEBFCC6836138163BE33 /* IJKVideoUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		17FCBFB847DC9EAD223D6C6F /* IJKVideoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 17FCB244C18EF2329BCD05A8 /* IJKVideoUtils.m */; };
 		2282FE4122361DAA000824C0 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2282FE3F22361DAA000824C0 /* libcrypto.a */; };
 		2282FE4222361DAA000824C0 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2282FE4022361DAA000824C0 /* libssl.a */; };
 		4D32BC811F906E3A00CE9F03 /* IJKSDLGLViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D32BC801F906E3600CE9F03 /* IJKSDLGLViewProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -275,6 +277,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		17FCB244C18EF2329BCD05A8 /* IJKVideoUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IJKVideoUtils.m; path = IJKMediaPlayer/IJKVideoUtils.m; sourceTree = "<group>"; };
+		17FCBEBFCC6836138163BE33 /* IJKVideoUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IJKVideoUtils.h; path = IJKMediaPlayer/IJKVideoUtils.h; sourceTree = "<group>"; };
 		2282FE3F22361DAA000824C0 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../build/universal/lib/libcrypto.a; sourceTree = "<group>"; };
 		2282FE4022361DAA000824C0 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../build/universal/lib/libssl.a; sourceTree = "<group>"; };
 		454316201A66493700676070 /* ffpipeline_ios.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ffpipeline_ios.c; path = ijkmedia/ijkplayer/ios/pipeline/ffpipeline_ios.c; sourceTree = "<group>"; };
@@ -962,6 +966,8 @@
 				E698089F1C7EB2040048A46C /* IJKNotificationManager.m */,
 				E69808991C7EB13A0048A46C /* NSString+IJKMedia.h */,
 				E698089A1C7EB13A0048A46C /* NSString+IJKMedia.m */,
+				17FCB244C18EF2329BCD05A8 /* IJKVideoUtils.m */,
+				17FCBEBFCC6836138163BE33 /* IJKVideoUtils.h */,
 			);
 			name = IJKMediaPlayer;
 			sourceTree = "<group>";
@@ -1025,6 +1031,7 @@
 				E6C459BB1C706A13004831EC /* ijksdl_egl.h in Headers */,
 				E6C459BD1C7089AB004831EC /* ff_ffplay_options.h in Headers */,
 				E654EA8F1B6B27E600B0F2D0 /* IJKMediaFramework.h in Headers */,
+				17FCB0976D7BDB259AECC9FD /* IJKVideoUtils.h in Headers */,
 				E6C2E7BE1C92BD3600E59229 /* IJKKVOController.h in Headers */,
 				E69808A01C7EB2040048A46C /* IJKNotificationManager.h in Headers */,
 				54CF8A501E15287D00309DD5 /* ijkthreadpool.h in Headers */,
@@ -1380,6 +1387,7 @@
 				54A029B81D4700E6001C61C1 /* ijklongurl.c in Sources */,
 				E6C459C01C708CAF004831EC /* renderer_rgb.c in Sources */,
 				E654EABA1B6B286B00B0F2D0 /* ffpipeline_ffplay.c in Sources */,
+				17FCBFB847DC9EAD223D6C6F /* IJKVideoUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

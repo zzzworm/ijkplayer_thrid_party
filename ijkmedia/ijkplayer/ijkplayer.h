@@ -236,6 +236,11 @@ int ijkmp_frame_mutex_init(IjkMediaPlayer *mp);
 int ijkmp_frame_lock(IjkMediaPlayer *mp);
 int ijkmp_frame_unlock(IjkMediaPlayer *mp);
 
+
+// get video size with url
+
+int ffmpegGetVideoSize(int *size, const char *url);
+
 //end
 
 #endif

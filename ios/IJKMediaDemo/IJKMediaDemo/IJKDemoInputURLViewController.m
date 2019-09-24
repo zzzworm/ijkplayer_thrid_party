@@ -16,6 +16,7 @@
 
 #import "IJKDemoInputURLViewController.h"
 #import "IJKMoviePlayerViewController.h"
+#import <IJKMediaFramework/IJKVideoUtils.h>
 
 @interface IJKDemoInputURLViewController () <UITextViewDelegate>
 
@@ -37,9 +38,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.textView.text = @"http://img.ksbbs.com/asset/Mon_1703/05cacb4e02f9d9e.mp4";
+    self.textView.text = @"https://media001.geekbang.org/f433fd1ce5e84d27b1101f0dad72a126/de563bb4aba94b5f95f448b33be4dd9f-9aede6861be944d696fe365f3a33b7b4-sd.m3u8";
 }
 
 - (void)onClickPlayButton {
+    NSString* inputString = self.textView.text;
+    CGSize size = [IJKVideoUtils getSizeWithUrl:inputString];
+    
+    NSLog(@"size : width : %f, height: %f",size.width, size.height);
+    
     NSURL *url = [NSURL URLWithString:self.textView.text];
     NSString *scheme = [[url scheme] lowercaseString];
     

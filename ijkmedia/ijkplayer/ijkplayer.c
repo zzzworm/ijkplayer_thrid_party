@@ -843,5 +843,53 @@ AVFrame* ijkmp_get_current_frame(IjkMediaPlayer *mp)
 {
     return mp->ffplayer->current_frame;
 }
+
+void logInfo(char *tag, int ret) {
+    av_log(NULL, AV_LOG_INFO, "%s: %s\n", tag, av_err2str(ret));
+}
+
+int ffmpegGetVideoSize(int *size, const char *url) {
+    AVFormatContext *inCtx = NULL;
+    int ret, width, height;
+    int videoIndex = -1;
+    AVCodecParameters *params;
+
+    inCtx = avformat_alloc_context();
+    ret = avformat_open_input(&inCtx, url, NULL, NULL);
+    if (ret != 0) {
+        logInfo("cannot open", ret);
+        return ret;
+    }
+
+    if ((ret = avformat_find_stream_info(inCtx, NULL) < 0)) {
+        logInfo("cannot find stream", ret);
+        return ret;
+    }
+
+    for (int i = 0; i < inCtx->nb_streams; i++) {
+        if (inCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+            videoIndex = i;
+            break;
+        }
+    }
+    if (videoIndex == -1) {
+        printf("Didn't find a video stream.\n");
+        return -10001;
+    }
+
+    params = inCtx->streams[videoIndex]->codecpar;
+
+    width = params->width;
+    height = params->height;
+
+    avformat_free_context(inCtx);
+
+    size[0] = width;
+    size[1] = height;
+
+    return 0;
+}
+
 // #endif
+
 //end
