@@ -662,6 +662,9 @@ int createCVPixelBuffer(FFPlayer *ffp, AVCodecParameters* avcp, AVFrame* frame, 
                                      attrs,
                                      cvImage
                                      );
+        
+        // CFRelease(attrs);
+        
         if (status)
         {
             return AVERROR_EXTERNAL;
