@@ -26,7 +26,7 @@ FF_ALL_ARCHS_IOS8_SDK="arm64 i386 x86_64"
 FF_ALL_ARCHS=$FF_ALL_ARCHS_IOS8_SDK
 
 #----------
-UNI_BUILD_ROOT=`pwd`
+UNI_BUILD_ROOT=$(pwd)
 UNI_TMP="$UNI_BUILD_ROOT/tmp"
 UNI_TMP_LLVM_VER_FILE="$UNI_TMP/llvm.ver.txt"
 FF_TARGET=$1
@@ -42,16 +42,15 @@ echo_archs() {
 }
 
 FF_LIBS="libavcodec libavfilter libavformat libavutil libswscale libswresample"
-do_lipo_ffmpeg () {
+do_lipo_ffmpeg() {
     LIB_FILE=$1
     LIPO_FLAGS=
-    for ARCH in $FF_ALL_ARCHS
-    do
+    for ARCH in $FF_ALL_ARCHS; do
         ARCH_LIB_FILE="$UNI_BUILD_ROOT/build/ffmpeg-$ARCH/output/lib/$LIB_FILE"
         if [ -f "$ARCH_LIB_FILE" ]; then
             LIPO_FLAGS="$LIPO_FLAGS $ARCH_LIB_FILE"
         else
-            echo "skip $LIB_FILE of $ARCH";
+            echo "skip $LIB_FILE of $ARCH"
         fi
     done
 
@@ -60,16 +59,15 @@ do_lipo_ffmpeg () {
 }
 
 SSL_LIBS="libcrypto libssl"
-do_lipo_ssl () {
+do_lipo_ssl() {
     LIB_FILE=$1
     LIPO_FLAGS=
-    for ARCH in $FF_ALL_ARCHS
-    do
+    for ARCH in $FF_ALL_ARCHS; do
         ARCH_LIB_FILE="$UNI_BUILD_ROOT/build/openssl-$ARCH/output/lib/$LIB_FILE"
         if [ -f "$ARCH_LIB_FILE" ]; then
             LIPO_FLAGS="$LIPO_FLAGS $ARCH_LIB_FILE"
         else
-            echo "skip $LIB_FILE of $ARCH";
+            echo "skip $LIB_FILE of $ARCH"
         fi
     done
 
@@ -79,17 +77,15 @@ do_lipo_ssl () {
     fi
 }
 
-do_lipo_all () {
+do_lipo_all() {
     mkdir -p $UNI_BUILD_ROOT/build/universal/lib
     echo "lipo archs: $FF_ALL_ARCHS"
-    for FF_LIB in $FF_LIBS
-    do
-        do_lipo_ffmpeg "$FF_LIB.a";
+    for FF_LIB in $FF_LIBS; do
+        do_lipo_ffmpeg "$FF_LIB.a"
     done
 
     ANY_ARCH=
-    for ARCH in $FF_ALL_ARCHS
-    do
+    for ARCH in $FF_ALL_ARCHS; do
         ARCH_INC_DIR="$UNI_BUILD_ROOT/build/ffmpeg-$ARCH/output/include"
         if [ -d "$ARCH_INC_DIR" ]; then
             if [ -z "$ANY_ARCH" ]; then
@@ -100,19 +96,18 @@ do_lipo_all () {
             UNI_INC_DIR="$UNI_BUILD_ROOT/build/universal/include"
 
             mkdir -p "$UNI_INC_DIR/libavutil/$ARCH"
-            cp -f "$ARCH_INC_DIR/libavutil/avconfig.h"  "$UNI_INC_DIR/libavutil/$ARCH/avconfig.h"
-            cp -f tools/avconfig.h                      "$UNI_INC_DIR/libavutil/avconfig.h"
+            cp -f "$ARCH_INC_DIR/libavutil/avconfig.h" "$UNI_INC_DIR/libavutil/$ARCH/avconfig.h"
+            cp -f tools/avconfig.h "$UNI_INC_DIR/libavutil/avconfig.h"
             cp -f "$ARCH_INC_DIR/libavutil/ffversion.h" "$UNI_INC_DIR/libavutil/$ARCH/ffversion.h"
-            cp -f tools/ffversion.h                     "$UNI_INC_DIR/libavutil/ffversion.h"
+            cp -f tools/ffversion.h "$UNI_INC_DIR/libavutil/ffversion.h"
             mkdir -p "$UNI_INC_DIR/libffmpeg/$ARCH"
-            cp -f "$ARCH_INC_DIR/libffmpeg/config.h"    "$UNI_INC_DIR/libffmpeg/$ARCH/config.h"
-            cp -f tools/config.h                        "$UNI_INC_DIR/libffmpeg/config.h"
+            cp -f "$ARCH_INC_DIR/libffmpeg/config.h" "$UNI_INC_DIR/libffmpeg/$ARCH/config.h"
+            cp -f tools/config.h "$UNI_INC_DIR/libffmpeg/config.h"
         fi
     done
 
-    for SSL_LIB in $SSL_LIBS
-    do
-        do_lipo_ssl "$SSL_LIB.a";
+    for SSL_LIB in $SSL_LIBS; do
+        do_lipo_ssl "$SSL_LIB.a"
     done
 }
 
@@ -130,8 +125,7 @@ elif [ "$FF_TARGET" = "lipo" ]; then
     do_lipo_all
 elif [ "$FF_TARGET" = "all" ]; then
     echo_archs
-    for ARCH in $FF_ALL_ARCHS
-    do
+    for ARCH in $FF_ALL_ARCHS; do
         sh tools/do-compile-ffmpeg.sh $ARCH $FF_TARGET_EXTRA
     done
 
@@ -141,8 +135,7 @@ elif [ "$FF_TARGET" = "check" ]; then
 elif [ "$FF_TARGET" = "clean" ]; then
     echo_archs
     echo "=================="
-    for ARCH in $FF_ALL_ARCHS
-    do
+    for ARCH in $FF_ALL_ARCHS; do
         echo "clean ffmpeg-$ARCH"
         echo "=================="
         cd ffmpeg-$ARCH && git clean -xdf && cd -
@@ -150,9 +143,10 @@ elif [ "$FF_TARGET" = "clean" ]; then
     echo "clean build cache"
     echo "================="
     rm -rf build/ffmpeg-*
-    rm -rf build/openssl-*
+    # rm -rf build/openssl-* # 不删除openssl的相关构建产物, 如果要删除, 使用openssl的clean命令
+    LIB_PATH=build/universal/lib
     rm -rf build/universal/include
-    rm -rf build/universal/lib
+    rm -rf "$LIB_PATH/libavcodec.a" "$LIB_PATH/libavfilter.a" "$LIB_PATH/libavformat.a" "$LIB_PATH/libavutil.a" "$LIB_PATH/libswresample.a" "$LIB_PATH/libswscale.a"
     echo "clean success"
 else
     echo "Usage:"

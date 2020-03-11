@@ -1,3 +1,5 @@
 xcuserdata
 xcshareddata
 *.xccheckout
+*.log
+switch_xcode.sh
