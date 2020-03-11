@@ -20,7 +20,7 @@
  * License along with ijkPlayer; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
+#include <UIKit/UIKit.h>
 #include "IJKVideoToolBoxSync.h"
 #include "ijksdl_vout_overlay_videotoolbox.h"
 #include "ffpipeline_ios.h"
@@ -952,7 +952,7 @@ static int vtbformat_init(VTBFormatDesc *fmt_desc, AVCodecParameters *codecpar)
     switch (codec) {
         case AV_CODEC_ID_HEVC:
             format_id = kCMVideoCodecType_HEVC;
-            if (@available(iOS 11.0, *)) {
+            if ([UIDevice currentDevice].systemVersion.floatValue >= 11.0) {
                 isHevcSupported = VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC);
             } else {
                 // Fallback on earlier versions
