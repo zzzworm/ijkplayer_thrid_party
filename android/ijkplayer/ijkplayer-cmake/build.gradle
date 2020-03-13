@@ -1,10 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    // http://tools.android.com/tech-docs/new-build-system/tips
-    //noinspection GroovyAssignabilityCheck
     compileSdkVersion rootProject.ext.compileSdkVersion
-    //noinspection GroovyAssignabilityCheck
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
@@ -18,14 +15,11 @@ android {
         }
     }
     sourceSets.main {
-        jniLibs.srcDirs 'src/main/libs'
-//         jni.srcDirs = ['src/main/jni'] // This prevents the auto generation of Android.mk
-        jni.srcDirs = [] // This prevents the auto generation of Android.mk
+        // jniLibs.srcDirs 'src/main/libs'
+        // jni.srcDirs = [] // This prevents the auto generation of Android.mk
     }
 }
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 }
-
-//apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");

@@ -54,12 +54,12 @@ dependencies {
 //    all64Api project(':ijkplayer-x86')
 //    all64Api project(':ijkplayer-x86_64')
 
-
-    api project(':ijkplayer-armv5')
-    api project(':ijkplayer-armv7a')
-    api project(':ijkplayer-arm64')
-    api project(':ijkplayer-x86')
-    api project(':ijkplayer-x86_64')
+    api project(':ijkplayer-cmake')
+    // api project(':ijkplayer-armv5')
+    // api project(':ijkplayer-armv7a')
+    // api project(':ijkplayer-arm64')
+    // api project(':ijkplayer-x86')
+    // api project(':ijkplayer-x86_64')
 
     // compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
     // compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
