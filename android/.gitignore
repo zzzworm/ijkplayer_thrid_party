@@ -84,3 +84,5 @@ local.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+.cxx
