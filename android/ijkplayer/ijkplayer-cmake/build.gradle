@@ -7,6 +7,15 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion rootProject.ext.targetSdkVersion
+
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=c++_static', "-DANDROID_TOOLCHAIN=gcc"
+            }
+        }
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+        }
     }
     buildTypes {
         release {
@@ -15,8 +24,13 @@ android {
         }
     }
     sourceSets.main {
-        // jniLibs.srcDirs 'src/main/libs'
-        // jni.srcDirs = [] // This prevents the auto generation of Android.mk
+        java.srcDirs = ["$rootProject.rootDir/ijkplayer-java/src/main/java/"]
+        jni.srcDirs = [] // This prevents the auto generation of Android.mk
+    }
+    externalNativeBuild {
+        cmake {
+            path 'src/main/CMakeLists.txt'
+        }
     }
 }
 
