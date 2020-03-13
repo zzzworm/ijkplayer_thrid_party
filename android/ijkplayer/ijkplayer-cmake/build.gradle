@@ -3,6 +3,7 @@ apply plugin: 'com.android.library'
 task cleanTempFiles(type: Delete) {
     delete fileTree("src/main/jniLibs").matching {
         include "**/*ijkplayer.so"
+        include "**/*ijksdl.so"
     }
 }
 
@@ -28,9 +29,12 @@ android {
 //                def useShell = 1 // use shell
 
                 def projectPath = "${rootDir.absolutePath}"
-                def ijkPath = "${projectPath}/../.."
+                def ijkPath = rootDir.absoluteFile.parentFile.parent
                 def ffmpegOutPath = "${new File("${projectPath}").parent}/out/libs"
-                arguments '-DANDROID_STL=c++_static', "-DANDROID_TOOLCHAIN=gcc", "-DFFMPEG_OUT=$ffmpegOutPath", "-DANROID_PROJECT_PATH=$projectPath", "-DUSE_SHELL=$useShell"
+                arguments '-DANDROID_STL=c++_static', "-DANDROID_TOOLCHAIN=gcc",
+                        "-DFFMPEG_OUT=$ffmpegOutPath", "-DANROID_PROJECT_PATH=$projectPath",
+                        "-DUSE_SHELL=$useShell", "-DIJK_PATH=$ijkPath",
+                        "-DAndroid=1","-DANDROID=1"
             }
         }
         ndk {
