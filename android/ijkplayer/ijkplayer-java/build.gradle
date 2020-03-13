@@ -27,4 +27,4 @@ dependencies {
     implementation "org.jetbrains:annotations:13.0"
 }
 
-apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
+//apply from: new File(rootProject.projectDir, "tools/gradle-on-demand.gradle");
