@@ -124,6 +124,7 @@ if (ANDROID)
     # android_ndk_import_module_cpufeatures()
     target_include_directories(ijksdl PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../ijkyuv/include)
     target_include_directories(ijksdl PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../ijkj4a)
+    target_include_directories(ijksdl PUBLIC ${CMAKE_CURRENT_LIST_DIR}/android)
 endif ()
 
 if (ANDROID)
