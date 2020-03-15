@@ -158,8 +158,13 @@ cd android/contrib
 ./compile-ffmpeg.sh clean
 ./compile-ffmpeg.sh all
 
+# build ijkplayer with shell or cmake
 cd ..
 ./compile-ijk.sh all
+
+# cmake
+cd android/ijkplayer
+./gradlew ijkplayer-cmake:assembleRelease
 
 # Android Studio:
 #     Open an existing Android Studio project

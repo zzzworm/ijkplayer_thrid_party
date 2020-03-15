@@ -7,12 +7,28 @@ task cleanTempFiles(type: Delete) {
     }
 }
 
+task copyFFmpegFiles() {
+    def files = fileTree("${rootDir.absoluteFile.parent}/out/libs").matching {
+        include "**/*ffmpeg.so"
+    }.getFiles()
+    def target = "${rootDir.absoluteFile}/so"
+    for (file in files) {
+        def targetPath = "$target/${file.parentFile.name}/${file.name}"
+        println("copy from ${file.path} to ${targetPath}")
+        new File(targetPath).parentFile.mkdirs()
+        new FileOutputStream(targetPath).with {
+            it.write(file.readBytes())
+            it.flush()
+        }
+    }
+}
+
 android {
     afterEvaluate {
         tasks.matching {
             it.name.startsWith('ass')
         }.each { task ->
-            task.dependsOn(cleanTempFiles)
+            task.dependsOn(cleanTempFiles, copyFFmpegFiles)
         }
     }
 
@@ -34,7 +50,7 @@ android {
                 arguments '-DANDROID_STL=c++_static', "-DANDROID_TOOLCHAIN=gcc",
                         "-DFFMPEG_OUT=$ffmpegOutPath", "-DANROID_PROJECT_PATH=$projectPath",
                         "-DUSE_SHELL=$useShell", "-DIJK_PATH=$ijkPath",
-                        "-DAndroid=1","-DANDROID=1"
+                        "-DAndroid=1", "-DANDROID=1"
             }
         }
         ndk {
