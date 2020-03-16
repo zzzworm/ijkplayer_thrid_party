@@ -706,9 +706,11 @@ static int decoder_decode_frame(FFPlayer *ffp, Decoder *d, AVFrame *frame, AVSub
                             } else if (!ffp->decoder_reorder_pts) {
                                 frame->pts = frame->pkt_dts;
                             }
+                            #if defined (__ANDROID__)
                             ffp_frame_lock(ffp);
                             ffp->current_frame = frame;
                             ffp_frame_unlock(ffp);
+                            #endif
                             //add for flutter
                              #if !defined (__ANDROID__)
                             ffp_pixelbuffer_lock(ffp);
@@ -1814,7 +1816,7 @@ static int queue_picture(FFPlayer *ffp, AVFrame *src_frame, double pts, double d
             ffp_pixelbuffer_lock(ffp);
             ffp->szt_pixelbuffer = SDL_VoutOverlayVideoToolBox_GetCVPixelBufferRef(vp->bmp);  // picture->opaque;
             ffp_pixelbuffer_unlock(ffp);
-            
+
             if (!ffp->szt_pixelbuffer) {
                 ALOGE("nil pixelBuffer in overlay\n");
             }
