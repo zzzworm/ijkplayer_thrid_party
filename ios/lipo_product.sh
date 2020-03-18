@@ -3,20 +3,63 @@ REAL_PATH="$BUILD_PATH/Release-iphoneos/IJKMediaFramework.framework/IJKMediaFram
 SIMU_PATH="$BUILD_PATH/Release-iphonesimulator/IJKMediaFramework.framework/IJKMediaFramework"
 OUTPUT_PATH="IJKMediaPlayer/Build/Products/Release-iphoneos/IJKMediaFramework.framework"
 LIPO_PATH="output/IJKMediaFramework"
+VERSION="0.2.2"
+LIB_NAME=IJKMediaFramework.tar.xz
 
-rm -rf output
-mkdir output
-cp -R "IJKMediaPlayer/Build/Products/Release-iphoneos/IJKMediaFramework.framework" output
-cp pod/LICENSE output
-lipo -create $REAL_PATH $SIMU_PATH -o $LIPO_PATH
-cp $LIPO_PATH "output/IJKMediaFramework.framework/IJKMediaFramework"
-rm $LIPO_PATH
+case "$1" in
 
+"lipo")
+    cd output
+    rm -rf output
+    mkdir output
+    cp -R "IJKMediaPlayer/Build/Products/Release-iphoneos/IJKMediaFramework.framework" output
+    cp pod/LICENSE output
+    lipo -create $REAL_PATH $SIMU_PATH -o $LIPO_PATH
+    cp $LIPO_PATH "output/IJKMediaFramework.framework/IJKMediaFramework"
+    rm $LIPO_PATH
 
-cd output
-tar cvzf IJKMediaFramework.tar.gz IJKMediaFramework.framework LICENSE
-tar cvJf IJKMediaFramework.tar.xz IJKMediaFramework.framework LICENSE
-cd ..
+    tar -cvJf $LIB_NAME IJKMediaFramework.framework LICENSE
 
-open -R output/IJKMediaFramework.framework
-cp pod/FlutterIJK.podspec output
+    open -R output/IJKMediaFramework.framework
+    ;;
+
+"split")
+    cd output
+    # split file
+    split -b 10m $LIB_NAME "$LIB_NAME".
+
+    ls "$LIB_NAME".* >files
+    ;;
+"cat")
+    cd output
+    CAT_SHELL=""
+
+    for DL_FILE in $(ls $LIB_NAME.*); do
+
+        CAT_SHELL="$CAT_SHELL wget https://cdn.jsdelivr.net/gh/CaiJingLong/flutter_ijkplayer_pod_spliter@${VERSION}/$DL_FILE\n"
+
+    done
+
+    CAT_SHELL="$CAT_SHELL cat IJKMediaFramework.tar.xz.* > IJKMediaFramework.tar.xz\n"
+    CAT_SHELL="$CAT_SHELL tar xvf IJKMediaFramework.tar.xz\n"
+    CAT_SHELL="$CAT_SHELL rm IJKMediaFramework.tar.xz.* IJKMediaFramework.tar.xz\n"
+
+    echo "$CAT_SHELL" | tee cat.sh
+    chmod 777 cat.sh
+
+    cp ../pod/README.md .
+    tar -cvzf README.tar.gz README.md LICENSE cat.sh
+    ;;
+"upload")
+    python3 upload.py
+;;
+"all")
+    $0 lipo
+    $0 split
+    $0 cat
+    ;;
+*)
+    echo "$0 lipo|split|cat|upload"
+    ;;
+
+esac
