@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
 
-  version = "0.2.2"
+  version = "0.2.3"
   spec.name         = "FlutterIJK"
   spec.version      = "#{version}"
   spec.summary      = "IJKPlayer for Flutter."

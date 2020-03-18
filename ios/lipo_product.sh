@@ -3,8 +3,13 @@ REAL_PATH="$BUILD_PATH/Release-iphoneos/IJKMediaFramework.framework/IJKMediaFram
 SIMU_PATH="$BUILD_PATH/Release-iphonesimulator/IJKMediaFramework.framework/IJKMediaFramework"
 OUTPUT_PATH="IJKMediaPlayer/Build/Products/Release-iphoneos/IJKMediaFramework.framework"
 LIPO_PATH="output/IJKMediaFramework"
-VERSION="0.2.2"
 LIB_NAME=IJKMediaFramework.tar.xz
+
+if [ ! "$VERSION" ]; then
+    VERSION="0.2.3"
+fi
+
+echo "build the $VERSION"
 
 case "$1" in
 
@@ -66,7 +71,7 @@ case "$1" in
     $0 cat
     ;;
 *)
-    echo "$0 lipo|tar|split|cat|all|upload"
+    echo "[VERSION=0.2.2] $0 lipo|tar|split|cat|all|upload"
     ;;
 
 esac
