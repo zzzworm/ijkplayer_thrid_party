@@ -47,7 +47,8 @@ int videotoolbox_video_thread(void *arg)
     VideoState *is = ffp->is;
     Decoder   *d = &is->viddec;
     int ret = 0;
-
+//    av_log(NULL, AV_LOG_INFO, "rotate = %d", ffp_get_video_rotate_degrees(ffp));
+    ffp_notify_msg2(ffp, FFP_MSG_VIDEO_ROTATION_CHANGED, ffp_get_video_rotate_degrees(ffp));
     for (;;) {
 
         if (is->abort_request || d->queue->abort_request) {

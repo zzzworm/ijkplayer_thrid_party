@@ -662,8 +662,8 @@ int createCVPixelBuffer(FFPlayer *ffp, AVCodecParameters* avcp, AVFrame* frame, 
                                      attrs,
                                      cvImage
                                      );
-        
-        // CFRelease(attrs);
+        CFRelease(attrs);
+        CFRelease(empty);
         
         if (status)
         {

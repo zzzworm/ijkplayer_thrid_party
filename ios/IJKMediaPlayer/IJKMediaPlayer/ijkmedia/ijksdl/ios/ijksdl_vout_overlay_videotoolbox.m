@@ -75,7 +75,7 @@ static void func_unref(SDL_VoutOverlay *overlay)
     }
 
     // modify for flutter, the CVBuffer will be release by FlutterIJK
-//    CVBufferRelease(opaque->pixel_buffer);
+//    CFAutorelease(opaque->pixel_buffer);
 
     opaque->pixel_buffer = NULL;
     overlay->pixels[0] = NULL;
