@@ -11,6 +11,9 @@ owner = "Caijinglong"
 repo = "flutter_ijkplayer_pod_spliter"
 version = os.environ["VERSION"]
 
+test_upload = False
+
+
 def get_basic_auth_str(username, password):
     temp_str = username + ':' + password
     bytesString = temp_str.encode(encoding="utf-8")
@@ -25,6 +28,9 @@ with open(f'{workdir}/../output/files') as f:
 
 def upload_file(path: str):
     fp = f'{workdir}/../output/{path}'
+    if test_upload:
+        print(f"upload {fp}")
+        return
     print(f'handle {fp}')
     with open(fp, 'rb') as f:
         buf = f.read()
@@ -43,41 +49,11 @@ def upload_file(path: str):
     print(f'upload {path} result: {response.text}')
 
 
-def create_branch():
-    url = f"repos/{owner}/{repo}/branches"
-    data = {
-        "refs": "master",
-        "branch_name": version,
-    }
-    dumpData = json.dumps(data)
-    response = requests.post(
-        f"https://api.github.com/{url}", dumpData, headers={
-            "Authorization": get_basic_auth_str("Caijingong", githubToken)
-        })
-    print(f"create branch result: {response.text}")
-    pass
-
-
-# create_branch()
-
-# upload_file('README.md')
-# upload_file('README.tar.gz')
+upload_file('README.tar.gz')
 
 for file_path in files:
-    # upload_file(file_path.strip())
+    upload_file(file_path.strip())
     pass
-
-# make shell content
-shell_str = ""
-
-for file_path in files:
-    shell_str = shell_str + \
-        f'wget "https://cdn.jsdelivr.net/gh/CaiJingLong/flutter_ijkplayer_pod_spliter@{version}/{file_path.strip()}\n'
-    pass
-
-shell_str += "cat IJKMediaFramework.tar.xz.* > IJKMediaFramework.tar.xz\n"
-shell_str += "tar xvf IJKMediaFramework.tar.xz\n"
-shell_str += "rm IJKMediaFramework.tar.xz.* IJKMediaFramework.tar.xz\n"
 
 with open(f'{workdir}/podspec.template') as pod_file:
     content_str = pod_file.read()

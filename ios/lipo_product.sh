@@ -9,7 +9,7 @@ LIB_NAME=IJKMediaFramework.tar.xz
 case "$1" in
 
 "lipo")
-    cd output
+    echo "exec: $0 lipo"
     rm -rf output
     mkdir output
     cp -R "IJKMediaPlayer/Build/Products/Release-iphoneos/IJKMediaFramework.framework" output
@@ -18,19 +18,23 @@ case "$1" in
     cp $LIPO_PATH "output/IJKMediaFramework.framework/IJKMediaFramework"
     rm $LIPO_PATH
 
+    cd output
     tar -cvJf $LIB_NAME IJKMediaFramework.framework LICENSE
-
-    open -R output/IJKMediaFramework.framework
+    open -R IJKMediaFramework.framework
+    cd ..
     ;;
 
 "split")
+    echo "exec: $0 split"
     cd output
     # split file
     split -b 10m $LIB_NAME "$LIB_NAME".
 
     ls "$LIB_NAME".* >files
+    cd ..
     ;;
 "cat")
+    echo "exec: $0 cat"
     cd output
     CAT_SHELL=""
 
@@ -49,10 +53,11 @@ case "$1" in
 
     cp ../pod/README.md .
     tar -cvzf README.tar.gz README.md LICENSE cat.sh
+    cd ..
     ;;
 "upload")
-    python3 upload.py
-;;
+    VERSION=$VERSION python3 pod/upload.py
+    ;;
 "all")
     $0 lipo
     $0 split
