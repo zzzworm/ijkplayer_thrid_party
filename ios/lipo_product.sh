@@ -17,13 +17,14 @@ case "$1" in
     lipo -create $REAL_PATH $SIMU_PATH -o $LIPO_PATH
     cp $LIPO_PATH "output/IJKMediaFramework.framework/IJKMediaFramework"
     rm $LIPO_PATH
+    ;;
+"tar")
 
     cd output
     tar -cvJf $LIB_NAME IJKMediaFramework.framework LICENSE
     open -R IJKMediaFramework.framework
     cd ..
     ;;
-
 "split")
     echo "exec: $0 split"
     cd output
@@ -60,11 +61,12 @@ case "$1" in
     ;;
 "all")
     $0 lipo
+    $0 tar
     $0 split
     $0 cat
     ;;
 *)
-    echo "$0 lipo|split|cat|upload"
+    echo "$0 lipo|tar|split|cat|all|upload"
     ;;
 
 esac
