@@ -1,0 +1,26 @@
+Pod::Spec.new do |spec|
+
+  version = "0.2.3"
+  spec.name         = "FlutterIJK"
+  spec.version      = "#{version}"
+  spec.summary      = "IJKPlayer for Flutter."
+  spec.description  = <<-DESC
+  IJKPlayer for flutter
+                   DESC
+  
+  spec.homepage     = "https://github.com/CaiJingLong/flutter_ijkplayer_pod"
+  spec.license      = { :type => 'MIT', :file =>'LICENSE' }
+  spec.author             = { "Caijinglong" => "cjl_spy@163.com" }
+  spec.source       = { :http => "https://cdn.jsdelivr.net/gh/CaiJingLong/flutter_ijkplayer_pod_spliter@#{version}/README.tar.gz"}
+  spec.vendored_frameworks = 'IJKMediaFramework.framework'
+  spec.frameworks  = "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "CoreVideo", "MobileCoreServices", "OpenGLES", "QuartzCore", "VideoToolbox", "Foundation", "UIKit", "MediaPlayer"
+  spec.libraries   = "bz2", "z", "stdc++"
+
+  spec.platform = :ios
+  spec.ios.deployment_target = '8.0'
+  spec.requires_arc = true
+
+  spec.prepare_command = <<-CMD
+    sh cat.sh
+  CMD
+end

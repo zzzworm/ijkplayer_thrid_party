@@ -107,6 +107,7 @@ static int vout_display_overlay_l(SDL_Vout *vout, SDL_VoutOverlay *overlay)
 #ifdef __APPLE__
         if (ijk_overlay.format == SDL_FCC__VTB) {
             ijk_overlay.pixel_buffer = SDL_VoutOverlayVideoToolBox_GetCVPixelBufferRef(overlay);
+            CFAutorelease(ijk_overlay.pixel_buffer);
         }
 #endif
         if ([gl_view respondsToSelector:@selector(display_pixels:)]) {

@@ -20,7 +20,7 @@
  * License along with ijkPlayer; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
+#include <UIKit/UIKit.h>
 #include "IJKVideoToolBoxSync.h"
 #include "ijksdl_vout_overlay_videotoolbox.h"
 #include "ffpipeline_ios.h"
@@ -311,7 +311,9 @@ static void VTDecoderCallback(void *decompressionOutputRefCon,
 #endif
 
         OSType format_type = CVPixelBufferGetPixelFormatType(imageBuffer);
-        if (format_type != kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
+      //modify for flutter
+      //if (format_type != kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
+      if (format_type != kCVPixelFormatType_32BGRA) {
             ALOGI("format_type error \n");
             goto failed;
         }
@@ -423,11 +425,18 @@ static VTDecompressionSessionRef vtbsession_create(Ijk_VideoToolBox_Opaque* cont
 
     ret = vtbformat_init(&context->fmt_desc, context->codecpar);
 
-    if (ffp->vtb_max_frame_width > 0 && width > ffp->vtb_max_frame_width) {
-        double w_scaler = (float)ffp->vtb_max_frame_width / width;
-        width = ffp->vtb_max_frame_width;
-        height = height * w_scaler;
-    }
+  //modify for flutter
+  /*if (ffp->vtb_max_frame_width > 0 && width > ffp->vtb_max_frame_width) {
+      double w_scaler = (float)ffp->vtb_max_frame_width / width;
+      width = ffp->vtb_max_frame_width;
+      height = height * w_scaler;
+  }*/
+  if (ffp->vtb_frame_width_default > 0 && ffp->vtb_max_frame_width > 0 && width > ffp->vtb_max_frame_width) {
+    double w_scaler = (float)ffp->vtb_max_frame_width / width;
+    width = ffp->vtb_max_frame_width;
+    height = height * w_scaler;
+  }
+  //end
 
     ALOGI("after scale width %d height %d \n", width, height);
 
@@ -436,8 +445,12 @@ static VTDecompressionSessionRef vtbsession_create(Ijk_VideoToolBox_Opaque* cont
                                                                  0,
                                                                  &kCFTypeDictionaryKeyCallBacks,
                                                                  &kCFTypeDictionaryValueCallBacks);
+
+  //modify for flutter
+  //CFDictionarySetSInt32(destinationPixelBufferAttributes,
+  //                      kCVPixelBufferPixelFormatTypeKey, kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange);
     CFDictionarySetSInt32(destinationPixelBufferAttributes,
-                          kCVPixelBufferPixelFormatTypeKey, kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange);
+          kCVPixelBufferPixelFormatTypeKey, kCVPixelFormatType_32BGRA);
     CFDictionarySetSInt32(destinationPixelBufferAttributes,
                           kCVPixelBufferWidthKey, width);
     CFDictionarySetSInt32(destinationPixelBufferAttributes,
@@ -939,7 +952,7 @@ static int vtbformat_init(VTBFormatDesc *fmt_desc, AVCodecParameters *codecpar)
     switch (codec) {
         case AV_CODEC_ID_HEVC:
             format_id = kCMVideoCodecType_HEVC;
-            if (@available(iOS 11.0, *)) {
+            if ([UIDevice currentDevice].systemVersion.floatValue >= 11.0) {
                 isHevcSupported = VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC);
             } else {
                 // Fallback on earlier versions

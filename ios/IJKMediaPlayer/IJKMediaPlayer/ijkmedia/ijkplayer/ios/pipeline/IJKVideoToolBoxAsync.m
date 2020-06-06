@@ -40,6 +40,7 @@
 #include "ff_fferror.h"
 #include "ff_ffmsg.h"
 #include "ijksdl/ios/ijksdl_vout_overlay_videotoolbox.h"
+#import <UIKit/UIKit.h>
 
 #define IJK_VTB_FCC_AVCC   SDL_FOURCC('C', 'c', 'v', 'a')
 
@@ -1086,7 +1087,7 @@ static int vtbformat_init(VTBFormatDesc *fmt_desc, AVCodecParameters *codecpar)
     switch (codec) {
         case AV_CODEC_ID_HEVC:
             format_id = kCMVideoCodecType_HEVC;
-            if (@available(iOS 11.0, *)) {
+            if ([UIDevice currentDevice].systemVersion.floatValue >= 11.0) {
                 isHevcSupported = VTIsHardwareDecodeSupported(kCMVideoCodecType_HEVC);
             } else {
                 // Fallback on earlier versions
