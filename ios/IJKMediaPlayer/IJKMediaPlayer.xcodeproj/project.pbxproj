@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		5F795F352414F0EF00EB6A27 /* IJKMediaPlayerAggretage */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5F795F382414F0F000EB6A27 /* Build configuration list for PBXAggregateTarget "IJKMediaPlayerAggretage" */;
+			buildPhases = (
+				5F795F392414F0FB00EB6A27 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = IJKMediaPlayerAggretage;
+			productName = IJKMediaPlayerAggretage;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		2282FE4122361DAA000824C0 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2282FE3F22361DAA000824C0 /* libcrypto.a */; };
 		2282FE4222361DAA000824C0 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2282FE4022361DAA000824C0 /* libssl.a */; };
@@ -1117,6 +1131,10 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = bilibili;
 				TargetAttributes = {
+					5F795F352414F0EF00EB6A27 = {
+						CreatedOnToolsVersion = 11.3;
+						ProvisioningStyle = Automatic;
+					};
 					E654EA891B6B27E600B0F2D0 = {
 						CreatedOnToolsVersion = 6.4;
 					};
@@ -1130,6 +1148,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = E6903EB017EAF6C500CFD954;
@@ -1140,6 +1159,7 @@
 				E654EA891B6B27E600B0F2D0 /* IJKMediaFramework */,
 				5450AFC11E63EA4300568494 /* IJKMediaFrameworkWithSSL */,
 				E654EA931B6B27E600B0F2D0 /* IJKMediaFrameworkTests */,
+				5F795F352414F0EF00EB6A27 /* IJKMediaPlayerAggretage */,
 			);
 		};
 /* End PBXProject section */
@@ -1196,7 +1216,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh \"${PROJECT_DIR}/../../ijkmedia/ijkplayer/version.sh\" \"${PROJECT_DIR}/../../ijkmedia/ijkplayer\" \"ijkversion.h\"";
+			shellScript = "sh \"${PROJECT_DIR}/../../ijkmedia/ijkplayer/version.sh\" \"${PROJECT_DIR}/../../ijkmedia/ijkplayer\" \"ijkversion.h\"\n";
+		};
+		5F795F392414F0FB00EB6A27 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh \"${SRCROOT}/merge.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1436,7 +1473,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/IJKMediaFrameworkWithSSL.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1487,7 +1524,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/IJKMediaFrameworkWithSSL.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1505,6 +1542,22 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5F795F362414F0F000EB6A27 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5F795F372414F0F000EB6A27 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -1542,7 +1595,7 @@
 				);
 				INFOPLIST_FILE = IJKMediaFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1592,7 +1645,7 @@
 				);
 				INFOPLIST_FILE = IJKMediaFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1707,7 +1760,7 @@
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -1738,7 +1791,7 @@
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 				VALIDATE_PRODUCT = YES;
@@ -1753,6 +1806,15 @@
 			buildConfigurations = (
 				5450B0411E63EA4300568494 /* Debug */,
 				5450B0421E63EA4300568494 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5F795F382414F0F000EB6A27 /* Build configuration list for PBXAggregateTarget "IJKMediaPlayerAggretage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F795F362414F0F000EB6A27 /* Debug */,
+				5F795F372414F0F000EB6A27 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

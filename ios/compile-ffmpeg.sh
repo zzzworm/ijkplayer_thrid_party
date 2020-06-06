@@ -21,7 +21,7 @@
 
 FF_ALL_ARCHS_IOS6_SDK="armv7 armv7s i386"
 FF_ALL_ARCHS_IOS7_SDK="armv7 armv7s arm64 i386 x86_64"
-FF_ALL_ARCHS_IOS8_SDK="arm64 i386 x86_64"
+FF_ALL_ARCHS_IOS8_SDK="armv7 arm64 i386 x86_64"
 
 FF_ALL_ARCHS=$FF_ALL_ARCHS_IOS8_SDK
 
@@ -79,6 +79,35 @@ do_lipo_ssl () {
     fi
 }
 
+mysedi() {
+    f=$1
+    exp=$2
+    n=`basename $f`
+    cp $f /tmp/$n
+    sed $exp /tmp/$n > $f
+    rm /tmp/$n
+}
+
+X264_LIBS="libx264"
+do_lipo_x264 () {
+    LIB_FILE=$1
+    LIPO_FLAGS=
+    for ARCH in $FF_ALL_ARCHS
+    do
+        ARCH_LIB_FILE="$UNI_BUILD_ROOT/build/x264-$ARCH/output/lib/$LIB_FILE"
+        if [ -f "$ARCH_LIB_FILE" ]; then
+            LIPO_FLAGS="$LIPO_FLAGS $ARCH_LIB_FILE"
+        else
+            echo "skip $LIB_FILE of $ARCH";
+        fi
+    done
+
+    if [ "$LIPO_FLAGS" != "" ]; then
+        xcrun lipo -create $LIPO_FLAGS -output $UNI_BUILD_ROOT/build/universal/lib/$LIB_FILE
+        xcrun lipo -info $UNI_BUILD_ROOT/build/universal/lib/$LIB_FILE
+    fi
+}
+
 do_lipo_all () {
     mkdir -p $UNI_BUILD_ROOT/build/universal/lib
     echo "lipo archs: $FF_ALL_ARCHS"
@@ -110,9 +139,18 @@ do_lipo_all () {
         fi
     done
 
+    for f in `find $UNI_INC_DIR -iname '*.h'`; do
+        echo $f
+        mysedi $f 's/AVMediaType/FF_AVMediaType/g'
+    done
+
     for SSL_LIB in $SSL_LIBS
     do
         do_lipo_ssl "$SSL_LIB.a";
+    done
+    for X264_LIB in $X264_LIBS
+    do
+        do_lipo_x264 "$X264_LIB.a"
     done
 }
 

@@ -3720,7 +3720,7 @@ static int read_thread(void *arg)
                 SDL_Delay(100);
             }
             SDL_LockMutex(wait_mutex);
-            SDL_CondWaitTimeout(is->continue_read_thread, wait_mutex, 10);
+            SDL_CondWaitTimeout(is->continue_read_cond, wait_mutex, 10);
             SDL_UnlockMutex(wait_mutex);
             ffp_statistic_l(ffp);
             continue;
@@ -3831,7 +3831,7 @@ static VideoState *stream_open(FFPlayer *ffp, const char *filename, AVInputForma
         packet_queue_init(&is->subtitleq) < 0)
         goto fail;
 
-    if (!(is->continue_read_thread = SDL_CreateCond())) {
+    if (!(is->continue_read_cond = SDL_CreateCond())) {
         av_log(NULL, AV_LOG_FATAL, "SDL_CreateCond(): %s\n", SDL_GetError());
         goto fail;
     }
