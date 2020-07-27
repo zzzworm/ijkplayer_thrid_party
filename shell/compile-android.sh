@@ -10,7 +10,7 @@ cd android/contrib
 ./compile-openssl.sh x86_64
 
 echo 'compile ffmpeg'
-
+./compile-ffmpeg.sh clean
 ./compile-ffmpeg.sh armv7a
 ./compile-ffmpeg.sh arm64
 ./compile-ffmpeg.sh x86
