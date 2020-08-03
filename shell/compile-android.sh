@@ -1,8 +1,12 @@
 echo 'will compile openssl ffmpeg and ijkplayer'
 
+
 echo 'compile openssl'
 
 cd android/contrib
+
+./compile-openssl.sh clean
+./compile-ffmpeg.sh clean
 
 ./compile-openssl.sh armv7a
 ./compile-openssl.sh arm64
@@ -10,7 +14,6 @@ cd android/contrib
 ./compile-openssl.sh x86_64
 
 echo 'compile ffmpeg'
-./compile-ffmpeg.sh clean
 ./compile-ffmpeg.sh armv7a
 ./compile-ffmpeg.sh arm64
 ./compile-ffmpeg.sh x86
