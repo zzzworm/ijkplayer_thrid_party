@@ -47,7 +47,7 @@ android {
                 def projectPath = "${rootDir.absolutePath}"
                 def ijkPath = rootDir.absoluteFile.parentFile.parent
                 def ffmpegOutPath = "${new File("${projectPath}").parent}/out/libs"
-                arguments '-DANDROID_STL=c++_static', "-DANDROID_TOOLCHAIN=gcc",
+                arguments '-DANDROID_STL=c++_static', "-DANDROID_TOOLCHAIN=clang",
                         "-DFFMPEG_OUT=$ffmpegOutPath", "-DANROID_PROJECT_PATH=$projectPath",
                         "-DUSE_SHELL=$useShell", "-DIJK_PATH=$ijkPath",
                         "-DAndroid=1", "-DANDROID=1"
